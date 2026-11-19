@@ -1,0 +1,40 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Large media files & downloads
+bin/
+output/downloads/
+output/clips/*.mp4
+output/clips/*.ass
+output/logos/
+output/*.mp4
+output/*.zip
+*.mp4
+*.m4a
+*.webm
+*.zip
+
+# Sensitive API Keys & Credentials
+.env
+serviceAccountKey.json
+firebase-key.json
+firebase_credentials.json
+client_secrets.json
+
+# Local databases & logs
+*.log
+grok_logs.csv
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Editor & OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

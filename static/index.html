@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ViralShorts AI Pro - YouTube to Viral Shorts Creator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cabinet+Grotesk:wght@800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Navbar -->
+    <header class="navbar">
+      <div class="nav-brand">
+        <div class="logo-icon">⚡</div>
+        <div class="brand-text">
+          <h1>ViralShorts <span>PRO</span></h1>
+          <p>Viral 9:16 Shorts &bull; Anti-Copyright &bull; Auto-Scheduler</p>
+        </div>
+      </div>
+      <div class="nav-actions">
+        <a href="#scheduled-section" class="btn btn-secondary btn-sm" id="btn-view-queue">📅 Scheduled Queue (<span id="queue-count">0</span>)</a>
+        <div class="status-pill" id="system-status-pill">
+          <span class="status-dot"></span> <span id="system-status-text">Checking System...</span>
+        </div>
+        <button class="btn btn-secondary btn-sm" id="btn-open-settings">⚙️ Settings</button>
+      </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-content">
+      <!-- Input Card -->
+      <section class="card input-hero-card">
+        <div class="hero-badge">🔥 Automated Viral Hook & Monetization Engine</div>
+        <h2 class="hero-title">Turn Any Long YouTube Video Into Viral Shorts</h2>
+        <p class="hero-desc">Extract high-engagement moments, reframe into vertical 9:16, apply custom logos, bypass Content-ID copyright claims, and auto-schedule across YouTube Shorts, TikTok & Instagram Reels.</p>
+
+        <div class="url-input-group">
+          <div class="input-icon">🎬</div>
+          <input type="text" id="video-url" placeholder="Paste YouTube link (e.g. https://www.youtube.com/watch?v=...)" />
+          <button class="btn btn-paste" id="btn-paste">📋 Paste</button>
+        </div>
+
+        <div class="quick-samples">
+          <span>Try quick sample:</span>
+          <button class="sample-tag" data-url="https://www.youtube.com/watch?v=UF8uR6Z6KLc">Steve Jobs Stanford Speech</button>
+          <button class="sample-tag" data-url="https://www.youtube.com/watch?v=L_LUpnjgPso">Huberman Lab Podcast</button>
+        </div>
+
+        <!-- Controls Grid -->
+        <div class="controls-grid">
+          <div class="control-box">
+            <label>🎯 Clip Length</label>
+            <select id="clip-duration">
+              <option value="20-45">Short (20s - 45s)</option>
+              <option value="30-60" selected>Optimal (30s - 60s)</option>
+              <option value="50-90">Deep Dive (50s - 90s)</option>
+            </select>
+          </div>
+
+          <div class="control-box">
+            <label>📐 9:16 Reframe Mode</label>
+            <select id="reframe-mode">
+              <option value="blur" selected>Blurred Background (Podcast standard)</option>
+              <option value="crop">Center Crop 9:16</option>
+              <option value="fit">Fit / Letterbox</option>
+            </select>
+          </div>
+
+          <div class="control-box">
+            <label>💬 Dynamic Subtitles</label>
+            <select id="caption-style">
+              <option value="hormozi" selected>Hormozi Yellow/Black Pop</option>
+              <option value="neon">Neon Cyan Glow</option>
+              <option value="minimal">Minimalist Clean White</option>
+              <option value="none">No Subtitles</option>
+            </select>
+          </div>
+
+          <div class="control-box">
+            <label>🧠 AI Model</label>
+            <select id="ai-provider">
+              <option value="gemini" selected>Google Gemini 3.8 Flash (Recommended)</option>
+              <option value="groq">Groq (Llama-3.3-70b)</option>
+              <option value="openai">OpenAI (GPT-4o-mini)</option>
+              <option value="auto">Smart Heuristic Engine</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Branding & Protection Row -->
+        <div class="advanced-toggles-row">
+          <!-- Anti-Copyright Shield Box -->
+          <div class="feature-toggle-card">
+            <div class="toggle-info">
+              <div class="toggle-title">
+                <span>🛡️ Anti-Copyright & Monetization Shield</span>
+                <label class="switch">
+                  <input type="checkbox" id="toggle-anti-copyright" checked>
+                  <span class="slider round"></span>
+                </label>
+              </div>
+              <p>Disrupts Content-ID audio/visual hashes (micro-pitch shift, equalizer tone & color histogram tuning) to protect your channel from copyright strikes and protect monetization eligibility.</p>
+            </div>
+          </div>
+
+          <!-- Custom Logo / Watermark Upload Box -->
+          <div class="feature-toggle-card">
+            <div class="toggle-info">
+              <div class="toggle-title">
+                <span>🎨 Custom Brand Logo / Watermark</span>
+                <span class="logo-loaded-badge hidden" id="logo-loaded-badge">Logo Active ✓</span>
+              </div>
+              <p>Upload your channel logo to burn permanently onto the vertical video.</p>
+              <div class="logo-controls">
+                <input type="file" id="logo-file-input" accept="image/png, image/jpeg, image/webp" style="display:none;" />
+                <button class="btn btn-secondary btn-sm" id="btn-upload-logo">📁 Upload Logo</button>
+                <select id="logo-position" class="sm-select">
+                  <option value="top_right" selected>Top-Right</option>
+                  <option value="top_left">Top-Left</option>
+                  <option value="bottom_right">Bottom-Right</option>
+                  <option value="bottom_left">Bottom-Left</option>
+                  <option value="center_top">Center-Top</option>
+                </select>
+                <span class="logo-preview-box hidden" id="logo-preview-box">
+                  <img id="logo-preview-img" src="" alt="Logo" />
+                  <button class="btn-remove-logo" id="btn-remove-logo">&times;</button>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="action-buttons-row">
+          <button class="btn btn-secondary btn-lg" id="btn-analyze">
+            🔍 Analyze Viral Moments & SEO
+          </button>
+          <button class="btn btn-primary btn-lg" id="btn-auto-create">
+            ⚡ Auto-Create All Viral Shorts
+          </button>
+        </div>
+      </section>
+
+      <!-- Processing Progress Modal/Banner -->
+      <section class="card progress-card hidden" id="progress-card">
+        <div class="progress-header">
+          <div class="spinner"></div>
+          <div>
+            <h4 id="progress-step">Processing Video...</h4>
+            <p id="progress-subtext">This might take a moment depending on video length</p>
+          </div>
+          <span class="pct-badge" id="progress-pct">0%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="progress-bar-fill" style="width: 0%;"></div>
+        </div>
+      </section>
+
+      <!-- Video Details Banner -->
+      <section class="video-info-banner hidden" id="video-info-banner">
+        <img id="video-thumb" src="" alt="Thumbnail" />
+        <div class="video-meta">
+          <span class="badge-source">YouTube Source</span>
+          <h3 id="video-title">Video Title</h3>
+          <p id="video-channel">Channel Name</p>
+        </div>
+      </section>
+
+      <!-- Detected Viral Moments Preview -->
+      <section class="moments-section hidden" id="moments-section">
+        <div class="section-header">
+          <div>
+            <h3>🔥 Detected Viral Moments & SEO</h3>
+            <p>Ranked by retention hook, emotional climax, and viral potential score</p>
+          </div>
+        </div>
+        <div class="moments-grid" id="moments-grid">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <!-- Generated Shorts Showcase -->
+      <section class="clips-section" id="clips-section">
+        <div class="section-header">
+          <div>
+            <h3>🎬 Generated Viral Shorts</h3>
+            <p>Ready to download, publish, or schedule automatically to YouTube, TikTok, and Instagram</p>
+          </div>
+          <button class="btn btn-secondary btn-sm" id="btn-refresh-clips">🔄 Refresh</button>
+        </div>
+        <div class="clips-grid" id="clips-grid">
+          <!-- Populated by JS -->
+          <div class="empty-state" id="clips-empty-state">
+            <div class="empty-icon">📱</div>
+            <h4>No Shorts generated yet</h4>
+            <p>Paste a YouTube link above and click Analyze or Auto-Create to produce your first viral vertical clip!</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Scheduled Posts Queue -->
+      <section class="scheduled-section" id="scheduled-section">
+        <div class="section-header">
+          <div>
+            <h3>📅 Auto-Upload & Publishing Queue</h3>
+            <p>Automated background posting across YouTube Shorts, TikTok, and Instagram Reels</p>
+          </div>
+          <button class="btn btn-secondary btn-sm" id="btn-refresh-queue">🔄 Refresh Queue</button>
+        </div>
+        <div class="card queue-card">
+          <div class="table-responsive">
+            <table class="queue-table">
+              <thead>
+                <tr>
+                  <th>Clip Title</th>
+                  <th>Platforms</th>
+                  <th>Scheduled Time</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="queue-table-body">
+                <tr>
+                  <td colspan="5" class="empty-queue-msg">No posts in the schedule queue yet. Click "📅 Schedule Post" on any generated short above!</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Schedule Post Modal -->
+    <div class="modal-backdrop hidden" id="schedule-modal">
+      <div class="modal-box modal-lg">
+        <div class="modal-header">
+          <h3>📅 Schedule & Auto-Upload Short</h3>
+          <button class="btn-close" id="btn-close-schedule">&times;</button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="sched-clip-id" />
+          
+          <div class="form-group">
+            <label>🎯 Clickbait Hook Title (SEO Optimized)</label>
+            <input type="text" id="sched-title" />
+            <div class="title-variants-row" id="title-variants-box">
+              <!-- Variants injected here -->
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>🚀 Select Target Platforms</label>
+            <div class="platform-checkboxes">
+              <label class="platform-check">
+                <input type="checkbox" id="plat-youtube" checked />
+                <span>🔴 YouTube Shorts</span>
+              </label>
+              <label class="platform-check">
+                <input type="checkbox" id="plat-instagram" checked />
+                <span>📸 Instagram Reels</span>
+              </label>
+              <label class="platform-check">
+                <input type="checkbox" id="plat-facebook" checked />
+                <span>📘 Facebook Reels</span>
+              </label>
+              <label class="platform-check">
+                <input type="checkbox" id="plat-tiktok" checked />
+                <span>🎵 TikTok</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>⏰ Schedule Date & Time</label>
+            <input type="datetime-local" id="sched-datetime" />
+            <small>Leave empty to publish immediately, or set date/time for scheduled release.</small>
+          </div>
+
+          <div class="form-group">
+            <label>🏷️ High-Traffic Viral Tags</label>
+            <input type="text" id="sched-tags" />
+          </div>
+
+          <div class="form-group">
+            <label>📝 Full Optimized Description</label>
+            <textarea id="sched-desc" rows="4" style="width:100%; background:var(--bg-input); color:white; border:1px solid var(--border-color); border-radius:8px; padding:10px; font-family:inherit;"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" id="btn-cancel-schedule">Cancel</button>
+          <button class="btn btn-primary" id="btn-confirm-schedule">🚀 Confirm & Add to Queue</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal-backdrop hidden" id="settings-modal">
+      <div class="modal-box modal-lg">
+        <div class="modal-header">
+          <h3>⚙️ App Settings & Social Accounts</h3>
+          <button class="btn-close" id="btn-close-settings">&times;</button>
+        </div>
+        <div class="modal-tabs">
+          <button class="modal-tab active" data-tab="tab-ai-keys">🧠 AI Keys</button>
+          <button class="modal-tab" data-tab="tab-social-accounts">🔗 Social Media Accounts (Auto-Upload)</button>
+        </div>
+        <div class="modal-body">
+          <!-- Tab 1: AI Keys -->
+          <div class="tab-pane active" id="tab-ai-keys">
+            <div class="form-group">
+              <label>Google Gemini API Key (Recommended)</label>
+              <input type="password" id="input-gemini-key" placeholder="AIzaSy..." />
+              <small>Used for Gemini 3.8 Flash high-retention transcript analysis.</small>
+            </div>
+            <div class="form-group">
+              <label>Groq API Key (Optional)</label>
+              <input type="password" id="input-groq-key" placeholder="gsk_..." />
+            </div>
+            <div class="form-group">
+              <label>OpenAI API Key (Optional)</label>
+              <input type="password" id="input-openai-key" placeholder="sk-..." />
+            </div>
+            <div class="system-diagnostic">
+              <h4>System & Database Status</h4>
+              <div class="diag-item"><span>FFmpeg Status:</span> <strong id="diag-ffmpeg">Checking...</strong></div>
+              <div class="diag-item"><span>Active AI Provider:</span> <strong id="diag-provider">Gemini / Heuristic</strong></div>
+              <div class="diag-item"><span>Anti-Copyright Engine:</span> <strong style="color:var(--accent-green)">Active (Acoustic + Visual Hashing)</strong></div>
+              <div class="diag-item"><span>Firebase Firestore:</span> <strong id="diag-firebase">Local Storage (Upload key below)</strong></div>
+            </div>
+
+            <!-- Firebase Setup Card -->
+            <div class="social-connect-card" style="margin-top:16px;">
+              <div class="social-card-header">
+                <span class="social-badge" style="color:#f59e0b;">🔥 Firebase Database Integration</span>
+                <span class="connect-status-badge" id="firebase-badge">Local Mode</span>
+              </div>
+              <p>Connect your Firebase Firestore & Cloud Storage by uploading your Firebase Admin service account key.</p>
+              <div class="form-row-file">
+                <input type="file" id="firebase-key-file" accept=".json" style="display:none;" />
+                <button class="btn btn-secondary btn-sm" id="btn-upload-firebase-key">📁 Upload serviceAccountKey.json</button>
+                <span id="firebase-file-status" style="font-size:12px; color:var(--text-muted);">No key uploaded yet</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 2: Social Media Accounts -->
+          <div class="tab-pane hidden" id="tab-social-accounts">
+            <!-- YouTube Account -->
+            <div class="social-connect-card">
+              <div class="social-card-header">
+                <span class="social-badge yt">🔴 YouTube Shorts</span>
+                <span class="connect-status-badge" id="yt-status-badge">Ready / Simulated</span>
+              </div>
+              <p>Upload your <code>client_secrets.json</code> from Google Cloud Console to enable direct auto-uploading to your YouTube channel.</p>
+              <div class="form-row-file">
+                <input type="file" id="yt-secrets-file" accept=".json" style="display:none;" />
+                <button class="btn btn-secondary btn-sm" id="btn-upload-yt-secrets">📁 Upload client_secrets.json</button>
+                <span id="yt-file-status" style="font-size:12px; color:var(--text-muted);">No file uploaded yet</span>
+              </div>
+            </div>
+
+            <!-- Instagram Reels -->
+            <div class="social-connect-card">
+              <div class="social-card-header">
+                <span class="social-badge ig">📸 Instagram Reels</span>
+              </div>
+              <div class="form-group">
+                <label>Instagram User ID / Business Account ID</label>
+                <input type="text" id="input-ig-user-id" placeholder="e.g. 178414058223..." />
+              </div>
+              <div class="form-group">
+                <label>Meta Graph API Access Token</label>
+                <input type="password" id="input-ig-token" placeholder="EAA..." />
+                <small>Obtained from Meta for Developers with <code>instagram_content_publish</code> permission.</small>
+              </div>
+            </div>
+
+            <!-- Facebook Reels -->
+            <div class="social-connect-card">
+              <div class="social-card-header">
+                <span class="social-badge fb">📘 Facebook Reels & Pages</span>
+              </div>
+              <div class="form-group">
+                <label>Facebook Page ID</label>
+                <input type="text" id="input-fb-page-id" placeholder="e.g. 1048291048..." />
+              </div>
+              <div class="form-group">
+                <label>Page Access Token</label>
+                <input type="password" id="input-fb-token" placeholder="EAA..." />
+              </div>
+            </div>
+
+            <!-- TikTok -->
+            <div class="social-connect-card">
+              <div class="social-card-header">
+                <span class="social-badge tt">🎵 TikTok</span>
+              </div>
+              <div class="form-group">
+                <label>TikTok Creator Access Token</label>
+                <input type="password" id="input-tt-token" placeholder="act.exampleToken..." />
+                <small>From TikTok Developer Portal (Content Posting API).</small>
+              </div>
+            </div>
+
+            <!-- 1-Click Universal Webhook -->
+            <div class="social-connect-card" style="border: 1px dashed var(--primary);">
+              <div class="social-card-header">
+                <span class="social-badge wh">⚡ 1-Click Webhook (Zapier / Make / Ayrshare)</span>
+                <span class="viral-badge">Easiest Method 🔥</span>
+              </div>
+              <p>Don't want to deal with developer apps? Paste your Webhook URL from Zapier, Make.com, or Ayrshare. The app will send video and metadata to post to all 4 platforms instantly!</p>
+              <div class="form-group">
+                <label>Webhook URL</label>
+                <input type="text" id="input-webhook-url" placeholder="https://hooks.zapier.com/hooks/catch/..." />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" id="btn-cancel-settings">Cancel</button>
+          <button class="btn btn-primary" id="btn-save-settings">Save All Settings</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
