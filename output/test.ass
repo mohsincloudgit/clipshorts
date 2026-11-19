@@ -1,0 +1,46 @@
+[Script Info]
+Title: Viral Short Captions
+ScriptType: v4.00+
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+YCbCr Matrix: None
+PlayResX: 1080
+PlayResY: 1920
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Arial Black,58,&H0000FFFF,&H00FFFFFF,&H00000000,&H80000000,-1,0,0,0,100,100,1,0,1,4.5,2,2,40,40,360,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:01.38,Default,,0,0,0,,WHEN WE WERE DESIGNING
+Dialogue: 0,0:00:01.38,0:00:02.76,Default,,0,0,0,,THE FIRST MACINTOSH COMPUTER,
+Dialogue: 0,0:00:03.01,0:00:04.04,Default,,0,0,0,,IT ALL CAME BACK
+Dialogue: 0,0:00:04.04,0:00:04.55,Default,,0,0,0,,TO ME.
+Dialogue: 0,0:00:04.55,0:00:05.57,Default,,0,0,0,,AND WE DESIGNED IT
+Dialogue: 0,0:00:05.57,0:00:06.60,Default,,0,0,0,,ALL INTO THE MAC.
+Dialogue: 0,0:00:06.60,0:00:08.34,Default,,0,0,0,,IT WAS THE FIRST
+Dialogue: 0,0:00:08.34,0:00:10.07,Default,,0,0,0,,COMPUTER WITH BEAUTIFUL TYPOGRAPHY.
+Dialogue: 0,0:00:10.62,0:00:11.71,Default,,0,0,0,,IF I HAD NEVER
+Dialogue: 0,0:00:11.71,0:00:12.81,Default,,0,0,0,,DROPPED IN ON THAT
+Dialogue: 0,0:00:12.81,0:00:13.90,Default,,0,0,0,,SINGLE COURSE IN COLLEGE,
+Dialogue: 0,0:00:14.09,0:00:15.02,Default,,0,0,0,,THE MAC WOULD HAVE
+Dialogue: 0,0:00:15.02,0:00:16.22,Default,,0,0,0,,NEVER HAD MULTIPLE TYPEFACES
+Dialogue: 0,0:00:16.22,0:00:18.24,Default,,0,0,0,,OR PROPORTIONALLY SPACED FONTS.
+Dialogue: 0,0:00:18.53,0:00:19.79,Default,,0,0,0,,AND SINCE WINDOWS JUST
+Dialogue: 0,0:00:19.79,0:00:20.74,Default,,0,0,0,,COPIED THE MAC,
+Dialogue: 0,0:00:20.83,0:00:22.53,Default,,0,0,0,,IT'S LIKELY THAT NO
+Dialogue: 0,0:00:22.53,0:00:24.23,Default,,0,0,0,,PERSONAL COMPUTER WOULD HAVE
+Dialogue: 0,0:00:24.23,0:00:24.65,Default,,0,0,0,,THEM.
+Dialogue: 0,0:00:28.20,0:00:30.91,Default,,0,0,0,,IF I HAD NEVER
+Dialogue: 0,0:00:30.91,0:00:32.27,Default,,0,0,0,,DROPPED OUT,
+Dialogue: 0,0:00:32.27,0:00:33.43,Default,,0,0,0,,I WOULD HAVE NEVER
+Dialogue: 0,0:00:33.43,0:00:34.59,Default,,0,0,0,,DROPPED IN ON THIS
+Dialogue: 0,0:00:34.59,0:00:35.17,Default,,0,0,0,,CALLIGRAPHY CLASS,
+Dialogue: 0,0:00:35.24,0:00:36.59,Default,,0,0,0,,AND PERSONAL COMPUTERS MIGHT
+Dialogue: 0,0:00:36.59,0:00:37.94,Default,,0,0,0,,NOT HAVE THE WONDERFUL
+Dialogue: 0,0:00:37.94,0:00:39.29,Default,,0,0,0,,TYPOGRAPHY THAT THEY DO.
+Dialogue: 0,0:00:39.29,0:00:40.64,Default,,0,0,0,,OF COURSE IT WAS
+Dialogue: 0,0:00:40.64,0:00:41.86,Default,,0,0,0,,IMPOSSIBLE TO CONNECT THE
+Dialogue: 0,0:00:41.86,0:00:42.72,Default,,0,0,0,,DOTS LOOKING FORWARD WHEN
+Dialogue: 0,0:00:42.72,0:00:43.58,Default,,0,0,0,,I WAS IN COLLEGE.
