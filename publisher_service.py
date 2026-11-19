@@ -13,19 +13,42 @@ SOCIAL_CONFIG_FILE = OUTPUT_DIR / "social_config.json"
 
 def get_social_config() -> Dict[str, Any]:
     """Loads saved credentials for social media platforms."""
+    cfg = {
+        "youtube": {
+            "client_secrets": os.getenv("YOUTUBE_CLIENT_SECRETS", "client_secrets.json"),
+            "enabled": bool(os.getenv("YOUTUBE_CLIENT_SECRETS"))
+        },
+        "instagram": {
+            "access_token": os.getenv("INSTAGRAM_ACCESS_TOKEN", ""),
+            "ig_user_id": os.getenv("INSTAGRAM_USER_ID", ""),
+            "enabled": bool(os.getenv("INSTAGRAM_ACCESS_TOKEN"))
+        },
+        "facebook": {
+            "page_access_token": os.getenv("FACEBOOK_PAGE_TOKEN", ""),
+            "page_id": os.getenv("FACEBOOK_PAGE_ID", ""),
+            "enabled": bool(os.getenv("FACEBOOK_PAGE_TOKEN"))
+        },
+        "tiktok": {
+            "access_token": os.getenv("TIKTOK_ACCESS_TOKEN", ""),
+            "enabled": bool(os.getenv("TIKTOK_ACCESS_TOKEN"))
+        },
+        "webhook": {
+            "url": os.getenv("SOCIAL_WEBHOOK_URL", ""),
+            "enabled": bool(os.getenv("SOCIAL_WEBHOOK_URL"))
+        }
+    }
+
     if SOCIAL_CONFIG_FILE.exists():
         try:
             with open(SOCIAL_CONFIG_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
+                saved = json.load(f)
+                for k, v in saved.items():
+                    if k in cfg:
+                        cfg[k].update(v)
         except Exception:
             pass
-    return {
-        "youtube": {"client_secrets": "client_secrets.json", "enabled": False},
-        "instagram": {"access_token": "", "ig_user_id": "", "enabled": False},
-        "facebook": {"page_access_token": "", "page_id": "", "enabled": False},
-        "tiktok": {"access_token": "", "enabled": False},
-        "webhook": {"url": "", "enabled": False} # Zapier / Make / Ayrshare webhook
-    }
+
+    return cfg
 
 def save_social_config(config_data: Dict[str, Any]) -> bool:
     """Saves credentials for social media platforms."""

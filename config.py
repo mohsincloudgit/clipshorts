@@ -1,7 +1,11 @@
 import os
 from pathlib import Path
+from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent
+
+# Load environment variables from .env file
+load_dotenv(BASE_DIR / ".env")
 OUTPUT_DIR = BASE_DIR / "output"
 CLIPS_DIR = OUTPUT_DIR / "clips"
 DOWNLOADS_DIR = OUTPUT_DIR / "downloads"
