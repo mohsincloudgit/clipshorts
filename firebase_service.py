@@ -114,7 +114,10 @@ def save_clip_to_db(clip_id: str, clip_data: Dict[str, Any]) -> bool:
             doc_ref.set(clip_data, merge=True)
             return True
         except Exception as e:
-            print(f"[Firebase Firestore Error] Failed to save clip: {e}")
+            if "SERVICE_DISABLED" in str(e) or "Cloud Firestore API has not been used" in str(e):
+                print("[Firebase Tip] Please click 'Create Database' under Firestore Database in Firebase Console (https://console.firebase.google.com/project/clipshorts-20ff0/firestore)")
+            else:
+                print(f"[Firebase Firestore Error] Failed to save clip: {e}")
     return False
 
 def get_clips_from_db() -> List[Dict[str, Any]]:
@@ -125,7 +128,10 @@ def get_clips_from_db() -> List[Dict[str, Any]]:
             clips = [doc.to_dict() for doc in docs]
             return clips
         except Exception as e:
-            print(f"[Firebase Firestore Error] Failed to fetch clips: {e}")
+            if "SERVICE_DISABLED" in str(e) or "Cloud Firestore API has not been used" in str(e):
+                pass
+            else:
+                print(f"[Firebase Firestore Error] Failed to fetch clips: {e}")
     return []
 
 def save_scheduled_post_to_db(post_id: str, post_data: Dict[str, Any]) -> bool:
@@ -136,7 +142,10 @@ def save_scheduled_post_to_db(post_id: str, post_data: Dict[str, Any]) -> bool:
             doc_ref.set(post_data, merge=True)
             return True
         except Exception as e:
-            print(f"[Firebase Firestore Error] Failed to save scheduled post: {e}")
+            if "SERVICE_DISABLED" in str(e) or "Cloud Firestore API has not been used" in str(e):
+                print("[Firebase Tip] Please click 'Create Database' under Firestore Database in Firebase Console")
+            else:
+                print(f"[Firebase Firestore Error] Failed to save scheduled post: {e}")
     return False
 
 def get_scheduled_posts_from_db() -> List[Dict[str, Any]]:
@@ -151,7 +160,10 @@ def get_scheduled_posts_from_db() -> List[Dict[str, Any]]:
                 posts.append(data)
             return posts
         except Exception as e:
-            print(f"[Firebase Firestore Error] Failed to fetch scheduled posts: {e}")
+            if "SERVICE_DISABLED" in str(e) or "Cloud Firestore API has not been used" in str(e):
+                pass
+            else:
+                print(f"[Firebase Firestore Error] Failed to fetch scheduled posts: {e}")
     return []
 
 def delete_scheduled_post_from_db(post_id: str) -> bool:
