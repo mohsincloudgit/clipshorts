@@ -24,22 +24,48 @@ def init_firebase() -> bool:
     cred = None
     storage_bucket = os.getenv("FIREBASE_STORAGE_BUCKET", "")
 
-    # 1. Check local key files
-    local_candidates = [
-        Path("serviceAccountKey.json"),
-        Path("firebase-key.json"),
-        Path("firebase_credentials.json")
-    ]
-    for p in local_candidates:
-        if p.exists():
-            try:
-                cred = credentials.Certificate(str(p.resolve()))
-                print(f"[Firebase] Loaded credentials from {p}")
-                break
-            except Exception as e:
-                print(f"[Firebase Warning] Error loading {p}: {e}")
+    # 1. Check direct individual keys from .env
+    fb_project_id = os.getenv("FIREBASE_PROJECT_ID")
+    fb_client_email = os.getenv("FIREBASE_CLIENT_EMAIL")
+    fb_private_key = os.getenv("FIREBASE_PRIVATE_KEY")
 
-    # 2. Check environment variable (raw JSON string or path)
+    if fb_project_id and fb_client_email and fb_private_key:
+        try:
+            # Handle escaped newlines in private key
+            formatted_key = fb_private_key.replace("\\n", "\n").strip()
+            cred_dict = {
+                "type": "service_account",
+                "project_id": fb_project_id,
+                "private_key_id": os.getenv("FIREBASE_PRIVATE_KEY_ID", "key1"),
+                "private_key": formatted_key,
+                "client_email": fb_client_email,
+                "client_id": os.getenv("FIREBASE_CLIENT_ID", ""),
+                "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                "token_uri": "https://oauth2.googleapis.com/token",
+                "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs"
+            }
+            cred = credentials.Certificate(cred_dict)
+            print("[Firebase] Successfully authenticated via direct environment keys!")
+        except Exception as e:
+            print(f"[Firebase Warning] Error initializing from direct keys: {e}")
+
+    # 2. Check local key files
+    if not cred:
+        local_candidates = [
+            Path("serviceAccountKey.json"),
+            Path("firebase-key.json"),
+            Path("firebase_credentials.json")
+        ]
+        for p in local_candidates:
+            if p.exists():
+                try:
+                    cred = credentials.Certificate(str(p.resolve()))
+                    print(f"[Firebase] Loaded credentials from {p}")
+                    break
+                except Exception as e:
+                    print(f"[Firebase Warning] Error loading {p}: {e}")
+
+    # 3. Check environment variable (raw JSON string or path)
     env_cred = os.getenv("FIREBASE_SERVICE_ACCOUNT")
     if not cred and env_cred:
         try:

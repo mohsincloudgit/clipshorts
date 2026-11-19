@@ -160,17 +160,49 @@ def upload_to_youtube(
         raise FileNotFoundError(f"Video file not found: {video_path}")
 
     cfg = get_social_config().get("youtube", {})
+    client_id = os.getenv("YOUTUBE_CLIENT_ID") or cfg.get("client_id", "")
+    client_secret = os.getenv("YOUTUBE_CLIENT_SECRET") or cfg.get("client_secret", "")
+    refresh_token = os.getenv("YOUTUBE_REFRESH_TOKEN") or cfg.get("refresh_token", "")
     secrets = cfg.get("client_secrets") or os.getenv("YOUTUBE_CLIENT_SECRETS") or "client_secrets.json"
-    
-    if os.path.exists(secrets):
-        try:
-            from googleapiclient.discovery import build
-            from googleapiclient.http import MediaFileUpload
-            from google_auth_oauthlib.flow import InstalledAppFlow
 
-            SCOPES = ["https://www.googleapis.com/auth/youtube.upload"]
+    # Authenticate via direct keys OR secrets file
+    creds = None
+    SCOPES = ["https://www.googleapis.com/auth/youtube.upload"]
+
+    try:
+        from googleapiclient.discovery import build
+        from googleapiclient.http import MediaFileUpload
+        from google_auth_oauthlib.flow import InstalledAppFlow
+        from google.oauth2.credentials import Credentials
+
+        # 1. Direct Refresh Token + Client ID & Secret
+        if client_id and client_secret and refresh_token:
+            creds = Credentials(
+                token=None,
+                refresh_token=refresh_token,
+                token_uri="https://oauth2.googleapis.com/token",
+                client_id=client_id,
+                client_secret=client_secret,
+                scopes=SCOPES
+            )
+        # 2. Direct Client ID & Client Secret (Interactive OAuth Flow)
+        elif client_id and client_secret:
+            client_config = {
+                "installed": {
+                    "client_id": client_id,
+                    "client_secret": client_secret,
+                    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                    "token_uri": "https://oauth2.googleapis.com/token"
+                }
+            }
+            flow = InstalledAppFlow.from_client_config(client_config, SCOPES)
+            creds = flow.run_local_server(port=0)
+        # 3. Fallback to client_secrets.json file
+        elif os.path.exists(secrets):
             flow = InstalledAppFlow.from_client_secrets_file(secrets, SCOPES)
             creds = flow.run_local_server(port=0)
+
+        if creds:
             youtube = build("youtube", "v3", credentials=creds)
 
             body = {
@@ -199,8 +231,9 @@ def upload_to_youtube(
                 "url": f"https://youtube.com/shorts/{response.get('id')}",
                 "mode": "live_api"
             }
-        except Exception as e:
-            return {"success": False, "platform": "youtube", "error": str(e)}
+    except Exception as e:
+        print(f"[YouTube Upload Error] {e}")
+        return {"success": False, "platform": "youtube", "error": str(e)}
 
     # Simulation / Local Ready Mode
     print(f"[YouTube Publisher] Video ready for publish: {title} (Target: {publish_at or 'Immediate'})")
