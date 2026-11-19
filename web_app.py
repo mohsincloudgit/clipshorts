@@ -11,7 +11,7 @@ from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 
-from config import CLIPS_DIR, OUTPUT_DIR, LOGOS_DIR, GEMINI_API_KEY, GROQ_API_KEY, OPENAI_API_KEY
+from config import CLIPS_DIR, OUTPUT_DIR, LOGOS_DIR, GEMINI_API_KEY, GROQ_API_KEY, OPENAI_API_KEY, IS_VERCEL
 from transcript_service import extract_youtube_id, fetch_youtube_transcript, format_transcript_for_ai
 from analyzer import find_viral_moments
 from downloader import get_video_info, download_youtube_video
@@ -63,8 +63,9 @@ def scheduler_worker():
             print(f"[Scheduler Worker Error] {e}")
         time.sleep(30)
 
-# Start background scheduler thread
-threading.Thread(target=scheduler_worker, daemon=True).start()
+# Start background scheduler thread only in persistent server mode (not serverless)
+if not IS_VERCEL:
+    threading.Thread(target=scheduler_worker, daemon=True).start()
 
 class AnalyzeRequest(BaseModel):
     url: str

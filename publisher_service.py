@@ -61,26 +61,30 @@ def save_social_config(config_data: Dict[str, Any]) -> bool:
         return False
 
 def init_db():
-    """Initializes SQLite database for post scheduling."""
-    conn = sqlite3.connect(SCHEDULER_DB)
-    cursor = conn.cursor()
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS scheduled_posts (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            clip_id TEXT NOT NULL,
-            clip_path TEXT NOT NULL,
-            title TEXT NOT NULL,
-            description TEXT,
-            tags TEXT,
-            platforms TEXT NOT NULL,
-            scheduled_time TEXT NOT NULL,
-            status TEXT NOT NULL DEFAULT 'pending',
-            publish_log TEXT,
-            created_at TEXT NOT NULL
-        )
-    """)
-    conn.commit()
-    conn.close()
+    """Initializes SQLite database for post scheduling safely."""
+    try:
+        SCHEDULER_DB.parent.mkdir(parents=True, exist_ok=True)
+        conn = sqlite3.connect(SCHEDULER_DB)
+        cursor = conn.cursor()
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS scheduled_posts (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                clip_id TEXT NOT NULL,
+                clip_path TEXT NOT NULL,
+                title TEXT NOT NULL,
+                description TEXT,
+                tags TEXT,
+                platforms TEXT NOT NULL,
+                scheduled_time TEXT NOT NULL,
+                status TEXT NOT NULL DEFAULT 'pending',
+                publish_log TEXT,
+                created_at TEXT NOT NULL
+            )
+        """)
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        print(f"[SQLite Init Note] {e}")
 
 init_db()
 

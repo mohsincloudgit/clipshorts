@@ -4,19 +4,31 @@ from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent
 
-# Load environment variables from .env file
+# Load environment variables from .env file if present
 load_dotenv(BASE_DIR / ".env")
-OUTPUT_DIR = BASE_DIR / "output"
+
+# Detect Vercel / AWS Lambda serverless environment
+IS_VERCEL = bool(os.getenv("VERCEL") or os.getenv("AWS_LAMBDA_FUNCTION_NAME"))
+
+if IS_VERCEL:
+    OUTPUT_DIR = Path("/tmp/output")
+    BIN_DIR = Path("/tmp/bin")
+else:
+    OUTPUT_DIR = BASE_DIR / "output"
+    BIN_DIR = BASE_DIR / "bin"
+
 CLIPS_DIR = OUTPUT_DIR / "clips"
 DOWNLOADS_DIR = OUTPUT_DIR / "downloads"
 TRANSCRIPTS_DIR = OUTPUT_DIR / "transcripts"
 LOGOS_DIR = OUTPUT_DIR / "logos"
-BIN_DIR = BASE_DIR / "bin"
 SCHEDULER_DB = OUTPUT_DIR / "scheduler.db"
 
-# Create required directories
-for d in [OUTPUT_DIR, CLIPS_DIR, DOWNLOADS_DIR, TRANSCRIPTS_DIR, LOGOS_DIR, BIN_DIR]:
-    d.mkdir(parents=True, exist_ok=True)
+# Create required directories safely (in writable /tmp on serverless)
+try:
+    for d in [OUTPUT_DIR, CLIPS_DIR, DOWNLOADS_DIR, TRANSCRIPTS_DIR, LOGOS_DIR, BIN_DIR]:
+        d.mkdir(parents=True, exist_ok=True)
+except Exception as e:
+    print(f"[Config Warning] Directory creation note: {e}")
 
 # API Keys & Auth settings
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
