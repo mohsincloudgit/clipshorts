@@ -3,25 +3,17 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# Large media files & downloads
+# Large media files & downloads (Exceeds GitHub 100MB limit)
 bin/
 output/downloads/
 output/clips/*.mp4
 output/clips/*.ass
-output/logos/
 output/*.mp4
 output/*.zip
 *.mp4
 *.m4a
 *.webm
 *.zip
-
-# Sensitive API Keys & Credentials
-.env
-serviceAccountKey.json
-firebase-key.json
-firebase_credentials.json
-client_secrets.json
 
 # Local databases & logs
 *.log

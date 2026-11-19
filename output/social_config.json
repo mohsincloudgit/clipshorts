@@ -1,0 +1,24 @@
+{
+  "youtube": {
+    "client_secrets": "client_secrets.json",
+    "enabled": true
+  },
+  "instagram": {
+    "ig_user_id": "",
+    "access_token": "",
+    "enabled": false
+  },
+  "facebook": {
+    "page_id": "",
+    "page_access_token": "",
+    "enabled": false
+  },
+  "tiktok": {
+    "access_token": "",
+    "enabled": false
+  },
+  "webhook": {
+    "url": "",
+    "enabled": false
+  }
+}
